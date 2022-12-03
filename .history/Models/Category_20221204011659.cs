@@ -9,6 +9,6 @@ namespace WebAPI.Models
     {
         public int Id { get; set; }
         public int Product_Id { get; set; }
-        public string Category_Name { get; set; } = "IOS";
+        public int Category_Name { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos.Category;
-using WebAPI.Services.CategoryService;
+using WebAPI.Services.Category;
 
 namespace WebAPI.Controllers
 {

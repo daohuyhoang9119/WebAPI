@@ -5,28 +5,19 @@ using System.Threading.Tasks;
 using AutoMapper;
 using WebAPI.Dtos.Category;
 
-namespace WebAPI.Services.CategoryService
+namespace WebAPI.Services.Category
 {
     public class CategoryService : ICategoryService
-    
-    {   
-        private static List<Category> category = new List<Category>{
-            new Category(),
-            new Category{Id = 1, Category_Name = "flag ship"},
-            new Category{Id = 2, Category_Name = "High End"},
-            new Category{Id = 3, Category_Name = "China"},
-            new Category{Id = 4, Category_Name = "USA"},
-        };
-
-        private readonly IMapper _mapper;
-
+    {
+        private static List<Category> categoryList = new List<Category>{
       
+        };
+        
         public CategoryService(IMapper mapper)
         {
             _mapper = mapper;
         }
 
-        
 
         public Task<ServiceResponse<List<GetCategoryDto>>> AddCategory(AddCategoryDto newCategory)
         {
@@ -43,10 +34,9 @@ namespace WebAPI.Services.CategoryService
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<List<GetCategoryDto>>> GetCategory()
+        public Task<ServiceResponse<List<GetCategoryDto>>> GetCategory()
         {
-             return new ServiceResponse<List<GetCategoryDto>> {Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList()};
-            // return null;
+            
         }
 
         public Task<ServiceResponse<GetCategoryDto>> UpdateCategory(GetCategoryDto updatedCategory)

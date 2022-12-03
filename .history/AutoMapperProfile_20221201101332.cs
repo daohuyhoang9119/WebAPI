@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using WebAPI.Dtos.Category;
 using WebAPI.Dtos.Product;
 
 namespace WebAPI
@@ -15,11 +14,6 @@ namespace WebAPI
             CreateMap<Product, GetProductDto>();
             CreateMap<AddProductDto, Product>();
             CreateMap<UpdateProductDto, GetProductDto>();
-            
-            CreateMap<Category, GetCategoryDto>();
-            CreateMap<AddCategoryDto, Category>();
-            // CreateMap<UpdateCategoryDto, GetCategoryDto>();
-
         }
     }
 }

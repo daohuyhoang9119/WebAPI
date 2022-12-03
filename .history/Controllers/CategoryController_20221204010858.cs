@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos.Category;
-using WebAPI.Services.CategoryService;
+using WebAPI.Services.Category;
 
 namespace WebAPI.Controllers
 {
@@ -16,10 +16,10 @@ namespace WebAPI.Controllers
             _categoryService = categoryService;
         }
         //Get List category
-        [HttpGet("list")]
+        // [HttpGet("list")]
      
-        public async Task<ActionResult<ServiceResponse<List<GetCategoryDto>>>> GetCategory(){
-            return Ok(await _categoryService.GetCategory());
-        }
+        // public async Task<ActionResult<ServiceResponse<List<GetCategoryDto>>>> GetCategory(){
+        //     return Ok(await _categoryService.GetCategory());
+        // }
     }
 }

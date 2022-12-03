@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Dtos.Category;
 
-namespace WebAPI.Services.CategoryService
+namespace WebAPI.Services.Category
 {
     public interface ICategoryService
     {

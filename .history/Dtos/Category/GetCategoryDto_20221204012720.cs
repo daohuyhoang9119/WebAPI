@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPI.Models
+namespace WebAPI.Dtos.Category
 {
-    public class Category
+    public class GetCategoryDto
     {
         public int Id { get; set; }
         public int Product_Id { get; set; }
-        public string Category_Name { get; set; } = "IOS";
+        public string Category_Name { get; set; }
     }
 }
