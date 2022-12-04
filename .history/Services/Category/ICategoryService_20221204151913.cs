@@ -13,6 +13,6 @@ namespace WebAPI.Services.CategoryService
 
         Task<ServiceResponse<GetCategoryDto>> UpdateCategory(UpdateCategoryDto updatedCategory);
         Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id);
-        // Task UpdateCategory(UpdateCategoryDto updatedCategory);
+        Task UpdateCategory(UpdateCategoryDto updatedCategory);
     }
 }

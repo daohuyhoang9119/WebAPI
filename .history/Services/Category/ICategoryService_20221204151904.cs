@@ -11,8 +11,8 @@ namespace WebAPI.Services.CategoryService
         Task<ServiceResponse<List<GetCategoryDto>>> GetCategory();
         Task<ServiceResponse<List<GetCategoryDto>>> AddCategory(AddCategoryDto newCategory);
 
-        Task<ServiceResponse<GetCategoryDto>> UpdateCategory(UpdateCategoryDto updatedCategory);
+        Task<ServiceResponse<GetCategoryDto>> UpdateCategory(GetCategoryDto updatedCategory);
         Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id);
-        // Task UpdateCategory(UpdateCategoryDto updatedCategory);
+        Task UpdateCategory(UpdateCategoryDto updatedCategory);
     }
 }

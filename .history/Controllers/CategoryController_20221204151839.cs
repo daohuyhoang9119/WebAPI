@@ -38,14 +38,5 @@ namespace WebAPI.Controllers
             return Ok(response); 
         }
 
-        [HttpDelete("id")]
-        public async Task<ActionResult<ServiceResponse<List<GetCategoryDto>>>> DeleteCategory(int id){
-            // return Ok(await _productService.UpdateProduct(updatedProduct));
-            var response = await _categoryService.DeleteCategory(id);
-            if(response.Data == null){
-                return NotFound(response);
-            }
-            return Ok(response); 
-        }
     }
 }

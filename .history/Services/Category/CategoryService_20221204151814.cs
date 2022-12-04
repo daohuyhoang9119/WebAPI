@@ -36,14 +36,9 @@ namespace WebAPI.Services.CategoryService
             return serviceRespone;
         }
 
-        public async Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id)
+        public Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id)
         {
-            var serviceResponse = new ServiceResponse<List<GetCategoryDto>>();
-            var category_remove= category.First(c => c.Id == id);
-            category.Remove(category_remove);
-            serviceResponse.Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
-            return serviceResponse;
-            
+            throw new NotImplementedException();
         }
 
 
@@ -73,14 +68,14 @@ namespace WebAPI.Services.CategoryService
             return response;
         }
 
-        // public Task<ServiceResponse<GetCategoryDto>> UpdateCategory(GetCategoryDto updatedCategory)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public Task<ServiceResponse<GetCategoryDto>> UpdateCategory(GetCategoryDto updatedCategory)
+        {
+            throw new NotImplementedException();
+        }
 
-        // Task ICategoryService.UpdateCategory(UpdateCategoryDto updatedCategory)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        Task ICategoryService.UpdateCategory(UpdateCategoryDto updatedCategory)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
