@@ -11,7 +11,13 @@ namespace WebAPI.Services.ProductService
 {
     public class ProductService : IProductService
     {   
-        
+        private static List<Product> products = new List<Product>{
+            new Product(),
+            new Product { Id = 1, Title = "Samsung"},
+            new Product { Id = 2, Title = "Oppo"},
+            new Product { Id = 3, Title = "Nokia"},
+            new Product { Id = 4, Title = "Gg Pixel"},
+        };
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
@@ -37,12 +43,9 @@ namespace WebAPI.Services.ProductService
         public async Task<ServiceResponse<List<GetProductDto>>> DeleteProduct(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetProductDto>>();
-            var productDeleted = await _context.Product.FirstAsync(c => c.Id == id);
-            _context.Product.Remove(productDeleted);
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = await _context.Product
-                .Select(c => _mapper.Map<GetProductDto>(c))
-                .ToListAsync();
+            var product = products.First(c => c.Id == id);
+            products.Remove(product);
+            serviceResponse.Data = products.Select(c => _mapper.Map<GetProductDto>(c)).ToList();
             return serviceResponse;
         }
 

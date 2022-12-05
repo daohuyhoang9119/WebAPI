@@ -11,7 +11,13 @@ namespace WebAPI.Services.ProductService
 {
     public class ProductService : IProductService
     {   
-        
+        private static List<Product> products = new List<Product>{
+            new Product(),
+            new Product { Id = 1, Title = "Samsung"},
+            new Product { Id = 2, Title = "Oppo"},
+            new Product { Id = 3, Title = "Nokia"},
+            new Product { Id = 4, Title = "Gg Pixel"},
+        };
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
@@ -37,12 +43,9 @@ namespace WebAPI.Services.ProductService
         public async Task<ServiceResponse<List<GetProductDto>>> DeleteProduct(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetProductDto>>();
-            var productDeleted = await _context.Product.FirstAsync(c => c.Id == id);
-            _context.Product.Remove(productDeleted);
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = await _context.Product
-                .Select(c => _mapper.Map<GetProductDto>(c))
-                .ToListAsync();
+            var product = products.First(c => c.Id == id);
+            products.Remove(product);
+            serviceResponse.Data = products.Select(c => _mapper.Map<GetProductDto>(c)).ToList();
             return serviceResponse;
         }
 
@@ -63,20 +66,18 @@ namespace WebAPI.Services.ProductService
         public async Task<ServiceResponse<GetProductDto>> UpdateProduct(UpdateProductDto updatedProduct)
         {
             ServiceResponse<GetProductDto> response = new ServiceResponse<GetProductDto>();
+            var product = products.FirstOrDefault(c=> c.Id == updatedProduct.Id);
             try{
-                var productDB = await _context.Product
-                    .FirstOrDefaultAsync(c=> c.Id == updatedProduct.Id);
-                // _mapper.Map(updatedProduct, productFromDB);
-                productDB.Title = updatedProduct.Title;
-                productDB.Price = updatedProduct.Price;
-                productDB.Discount = updatedProduct.Discount;
-                productDB.Rating_Average = updatedProduct.Rating_Average;
-                productDB.Description = updatedProduct.Description;
-                productDB.Brand_Name = updatedProduct.Brand_Name;
-                productDB.Created_at = updatedProduct.Created_at;
-                productDB.Updated_at = updatedProduct.Updated_at;
-                await _context.SaveChangesAsync();
-                response.Data = _mapper.Map<GetProductDto>(productDB);
+                _mapper.Map(updatedProduct, product);
+                // product.Title = updatedProduct.Title;
+                // product.Price = updatedProduct.Price;
+                // product.Discount = updatedProduct.Discount;
+                // product.Rating_Average = updatedProduct.Rating_Average;
+                // product.Brand_Name = updatedProduct.Brand_Name;
+                // product.Created_at = updatedProduct.Created_at;
+                // product.Updated_at = updatedProduct.Updated_at;
+
+                response.Data = _mapper.Map<GetProductDto>(product);
             } catch (Exception ex){
                 response.Success = false;
                 response.Message = ex.Message;
