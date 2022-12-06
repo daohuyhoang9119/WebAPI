@@ -22,7 +22,6 @@ namespace WebAPI
             // CreateMap<UpdateCategoryDto, GetCategoryDto>();
 
             CreateMap<UserRegisterDto, User>();
-            CreateMap<User,UserRegisterDto>();
 
         }
     }
