@@ -9,7 +9,7 @@ namespace WebAPI.Dtos.User
     {
         public string First_Name { get; set; } = String.Empty;
         public string Last_Name { get; set; } = String.Empty;
-        public string Email { get; set; } = String.Empty;
+        public string UserEmail { get; set; } = String.Empty;
         public string Password { get; set; } = String.Empty;
         
     }

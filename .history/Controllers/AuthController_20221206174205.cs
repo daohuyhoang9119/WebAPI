@@ -23,17 +23,8 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request){
             var response = await _authRepo.Register(
-                new User { Email = request.Email, First_Name = request.First_Name, Last_Name = request.Last_Name }, request.Password
+                new User { Email = request.Email}, request.Password
             );
-            if(!response.Success){
-                return BadRequest(response);
-            }
-            return Ok(response);
-        }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<ServiceResponse<User>>> Login(UserLoginDto request){
-            var response = await _authRepo.Login(request.Email, request.Password);
             if(!response.Success){
                 return BadRequest(response);
             }

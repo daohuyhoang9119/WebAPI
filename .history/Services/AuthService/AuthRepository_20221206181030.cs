@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +16,15 @@ namespace WebAPI.Services.AuthService
         {
             _context = context;
         }
-        public async Task<ServiceResponse<User>> Login(string useremail, string password)
+        public async Task<ServiceResponse<string>> Login(string useremail, string password)
         {
-            ServiceResponse<User> response = new ServiceResponse<User>();
+            ServiceResponse<string> response = new ServiceResponse<string>();
             var user = await _context.User.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(useremail.ToLower()));
             if(user == null){
                 response.Success = false;
                 response.Message = "User not found";
-            }else if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)){
-                response.Success = false;
-                response.Message = "Wrong password";
-            }else{
-                response.Data = user;
             }
-            return response;
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)

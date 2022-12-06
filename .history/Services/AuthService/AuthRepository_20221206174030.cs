@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +16,9 @@ namespace WebAPI.Services.AuthService
         {
             _context = context;
         }
-        public async Task<ServiceResponse<User>> Login(string useremail, string password)
+        public Task<ServiceResponse<string>> Login(string useremail, string password)
         {
-            ServiceResponse<User> response = new ServiceResponse<User>();
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(useremail.ToLower()));
-            if(user == null){
-                response.Success = false;
-                response.Message = "User not found";
-            }else if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)){
-                response.Success = false;
-                response.Message = "Wrong password";
-            }else{
-                response.Data = user;
-            }
-            return response;
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
@@ -64,12 +52,6 @@ namespace WebAPI.Services.AuthService
             using (var hmac = new System.Security.Cryptography.HMACSHA512()){
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt){
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt)){
-                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computeHash.SequenceEqual(passwordHash);
             }
         }
     }
