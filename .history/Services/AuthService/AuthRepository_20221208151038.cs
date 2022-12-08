@@ -23,9 +23,9 @@ namespace WebAPI.Services.AuthService
             _context = context;
             _configuration = configuration;
         }
-        public async Task<ServiceResponse<string>> Login(string useremail, string password)
+        public async Task<ServiceResponse<User>> Login(string useremail, string password)
         {
-            var response = new ServiceResponse<string>();
+            ServiceResponse<User> response = new ServiceResponse<User>();
             var user = await _context.User.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(useremail.ToLower()));
             if(user == null){
                 response.Success = false;

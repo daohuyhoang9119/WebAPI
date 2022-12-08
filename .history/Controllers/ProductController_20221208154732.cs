@@ -9,7 +9,7 @@ using WebAPI.Services.ProductService;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase

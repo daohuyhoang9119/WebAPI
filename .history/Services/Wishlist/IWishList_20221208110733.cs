@@ -12,7 +12,6 @@ namespace WebAPI.Services.Wishlist
         Task<ServiceResponse<List<GetWishListItemDto>>> AddWishListItem(GetWishListItemDto newProduct);
 
         Task<ServiceResponse<GetWishListItemDto>> UpdateWishListItem(WishList updatedProduct);
-
-        Task<ServiceResponse<List<GetWishListItemDto>>> DeleteWishListItem(int id);
+        Task<ServiceResponse<List<GetWishListItemDto>> DeleteWishListItem(int id);
     }
 }
