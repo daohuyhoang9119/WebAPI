@@ -7,7 +7,7 @@ namespace WebAPI.Dtos.Category
 {
     public class UpdateCategoryDto
     {
-        public int Product_Id { get; set; } = 2;
+        public int Id { get; set; }
         public string Category_Name { get; set; } = "hii";
         
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Data;
 using WebAPI.Dtos.Category;
 
 namespace WebAPI.Services.CategoryService
@@ -19,29 +21,33 @@ namespace WebAPI.Services.CategoryService
         };
 
         private readonly IMapper _mapper;
-
+        private readonly DataContext _context;
       
-        public CategoryService(IMapper mapper)
+        public CategoryService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
-
-        
 
         public async Task<ServiceResponse<List<GetCategoryDto>>> AddCategory(AddCategoryDto newCategory)
         {
             var serviceRespone = new  ServiceResponse<List<GetCategoryDto>>();
-            category.Add(_mapper.Map<Category>(newCategory));
-            serviceRespone.Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
+            Category category = _mapper.Map<Category>(newCategory);
+            _context.Category.Add(category);
+            await _context.SaveChangesAsync();
+            serviceRespone.Data = await _context.Category
+                .Select(c => _mapper.Map<GetCategoryDto>(c))
+                .ToListAsync();
             return serviceRespone;
         }
 
         public async Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetCategoryDto>>();
-            var category_remove= category.First(c => c.Id == id);
-            category.Remove(category_remove);
-            serviceResponse.Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
+            var category_remove= await _context.Category.FirstAsync(c => c.Id == id);
+            _context.Category.Remove(category_remove);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = await _context.Category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToListAsync();
             return serviceResponse;
             
         }
@@ -49,23 +55,22 @@ namespace WebAPI.Services.CategoryService
 
         public async Task<ServiceResponse<List<GetCategoryDto>>> GetCategory()
         {
-             return new ServiceResponse<List<GetCategoryDto>> {Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList()};
+            var response = new ServiceResponse<List<GetCategoryDto>>();
+            var dbProduct = await _context.Category.ToListAsync();
+            response.Data = dbProduct.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
+            return response;
         }
 
         public async Task<ServiceResponse<GetCategoryDto>> UpdateCategory(UpdateCategoryDto updatedCategory)
         {
             ServiceResponse<GetCategoryDto> response = new ServiceResponse<GetCategoryDto>();
-            var Category = category.FirstOrDefault(c=> c.Product_Id == updatedCategory.Product_Id);
+            var Category = category.FirstOrDefault(c=> c.Id == updatedCategory.Id);
            try{
-                _mapper.Map(updatedCategory, category); // product.Title = updatedProduct.Title;
-                // product.Price = updatedProduct.Price;
-                // product.Discount = updatedProduct.Discount;
-                // product.Rating_Average = updatedProduct.Rating_Average;
-                // product.Brand_Name = updatedProduct.Brand_Name;
-                // product.Created_at = updatedProduct.Created_at;
-                // product.Updated_at = updatedProduct.Updated_at;
-
-                response.Data = _mapper.Map<GetCategoryDto>(category);
+             var categoryDB = await _context.Category
+                    .FirstOrDefaultAsync(c=> c.Id == updatedCategory.Id);
+                _mapper.Map(updatedCategory, category); 
+                await _context.SaveChangesAsync();
+                response.Data = _mapper.Map<GetCategoryDto>(categoryDB);
             } catch (Exception ex){
                 response.Success = false;
                 response.Message = ex.Message;
@@ -73,14 +78,6 @@ namespace WebAPI.Services.CategoryService
             return response;
         }
 
-        // public Task<ServiceResponse<GetCategoryDto>> UpdateCategory(GetCategoryDto updatedCategory)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
-        // Task ICategoryService.UpdateCategory(UpdateCategoryDto updatedCategory)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        
     }
 }

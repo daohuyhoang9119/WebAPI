@@ -19,7 +19,7 @@ namespace WebAPI
             
             CreateMap<Category, GetCategoryDto>();
             CreateMap<AddCategoryDto, Category>();
-            // CreateMap<UpdateCategoryDto, GetCategoryDto>();
+            CreateMap<UpdateCategoryDto, GetCategoryDto>();
 
             CreateMap<UserRegisterDto, User>();
             CreateMap<User,UserRegisterDto>();

@@ -8,7 +8,6 @@ namespace WebAPI.Dtos.Category
     public class GetCategoryDto
     {
         public int Id { get; set; }
-        public int Product_Id { get; set; } = 2;
         public string Category_Name { get; set; } = "hii";
     }
 }

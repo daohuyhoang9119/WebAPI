@@ -71,6 +71,7 @@ namespace WebAPI.Services.ProductService
                 productDB.Price = updatedProduct.Price;
                 productDB.Discount = updatedProduct.Discount;
                 productDB.Rating_Average = updatedProduct.Rating_Average;
+                productDB.Category_Id = updatedProduct.Category_Id;
                 productDB.Description = updatedProduct.Description;
                 productDB.Brand_Name = updatedProduct.Brand_Name;
                 productDB.Created_at = updatedProduct.Created_at;
