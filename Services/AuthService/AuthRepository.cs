@@ -65,6 +65,18 @@ namespace WebAPI.Services.AuthService
             }
             return false;
         }
+        public async Task<ServiceResponse<string>> ForgotPassword(string email)
+        {
+            var response = new ServiceResponse<string>();
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == email);
+            if(user == null){
+                response.Success = false;
+                response.Message = "User not found";
+            }else{
+                response.Data = CreateToken(user);
+            }
+            return response;
+        }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt){
             using (var hmac = new System.Security.Cryptography.HMACSHA512()){
@@ -96,5 +108,7 @@ namespace WebAPI.Services.AuthService
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        
     }
 }

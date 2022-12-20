@@ -11,6 +11,8 @@ namespace WebAPI.Services.AuthService
         Task<ServiceResponse<int>> Register(User user, string password);
         Task<ServiceResponse<string>> Login(string useremail, string password);
         Task<bool> UserExits(string useremail);
+
+        Task<ServiceResponse<string>> ForgotPassword(string email);
          
     }
 }

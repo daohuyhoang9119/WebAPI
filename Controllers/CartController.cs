@@ -22,8 +22,8 @@ namespace WebAPI.Controllers
             return Ok(await _cartService.GetCartList());
         }
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<CartItem>>>> AddCartItem(CartItem newCartItem){
-            return Ok(await _cartService.AddCartItem(newCartItem));
+        public async Task<ActionResult<ServiceResponse<List<CartItem>>>> AddCartItem(int productId){
+            return Ok(await _cartService.AddCartItem(productId));
         }
 
 
