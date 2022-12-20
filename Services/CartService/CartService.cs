@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Data;
+using WebAPI.Dtos.CartItem;
 
 namespace WebAPI.Services.CartService
 {
@@ -17,20 +20,31 @@ namespace WebAPI.Services.CartService
         };
 
         private readonly IMapper _mapper;
-
+        private readonly DataContext _context;
       
-        public CartService(IMapper mapper)
+        public CartService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
-        public Task<ServiceResponse<List<CartItem>>> AddCartItem(CartItem newCartItem)
+        public async Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId)
         {
-            // var serviceRespone = new  ServiceResponse<List<CartItem>>();
-            // cart.Add(_mapper.Map<Cartegory>(newCartItem));
-            // serviceRespone.Data = category.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
-            // return serviceRespone;
-            throw new NotImplementedException();
+            var serviceRespone = new  ServiceResponse<List<CartItem>>();
+            var product = await _context.Product.FirstAsync(c => c.Id == productId);
+            var newCartItem = new CartItem();
+            newCartItem.Name = product.Title;
+            newCartItem.Quantity = 1;
+            newCartItem.Price = product.Price;
+            _context.CartItem.Add(newCartItem);
+            await _context.SaveChangesAsync();
+            var listCart = _context.Cart.Where(cart => cart.Id == newCartItem.Cart_Id);
+
+            //  _context.Cart.Add(cartItem);
+            // serviceRespone.Data = await _context.Product
+            //     .Select(c => _mapper.Map<GetProductDto>(c))
+            //     .ToListAsync();
+            return serviceRespone;
         }
 
         public Task<ServiceResponse<List<CartItem>>> DeleteCartItem(int cartItem_id)

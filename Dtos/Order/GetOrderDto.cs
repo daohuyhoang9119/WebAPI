@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Dtos.CartItem;
 
 namespace WebAPI.Dtos.Order
 {
@@ -14,7 +15,6 @@ namespace WebAPI.Dtos.Order
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
         public double Total_Amount { get; set; }
-        public virtual ICollection<CartItem> Order_Products { get; set; } = new List<CartItem>();
-        
+        public virtual ICollection<GetCartItemDto> Order_Products { get; set; } = new List<GetCartItemDto>();
     }
 }

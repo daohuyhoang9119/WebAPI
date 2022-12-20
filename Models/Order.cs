@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Dtos.CartItem;
 using WebAPI.Enums;
 
 namespace WebAPI.Models
@@ -15,7 +16,7 @@ namespace WebAPI.Models
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
         public double Total_Amount { get; set; }
-        public virtual ICollection<CartItem> Order_Products { get; set; } = new List<CartItem>();
+        public virtual ICollection<GetCartItemDto> Order_Products { get; set; } = new List<GetCartItemDto>();
         
     }
 }

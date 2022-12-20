@@ -9,6 +9,9 @@ namespace WebAPI.Models
     {
         public int Id { get; set; }
         public int User_Id { get; set; }
-        public virtual ICollection<CartItem> CartList { get; set; } = new List<CartItem>();
+        public double Total_Amount { get; set; }
+        public DateTime Created_At { get; set; }
+        public DateTime Updated_At { get; set; }
+        // public virtual ICollection<CartItem> CartList { get; set; } = new List<CartItem>();
     }
 }
