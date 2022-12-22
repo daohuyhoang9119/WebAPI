@@ -14,6 +14,9 @@ namespace WebAPI.Models
         public string Email { get; set; }= "abc@gmail.com";
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public string RefreshToken { get; set; } = string.Empty;
+        public DateTime TokenCreated { get; set; }
+        public DateTime TokenExpired { get; set; }
         public DateTime Date_Of_Birth { get; set; }
         public string Company_Name { get; set; }= string.Empty;
         public string Country { get; set; }= "VietNam";

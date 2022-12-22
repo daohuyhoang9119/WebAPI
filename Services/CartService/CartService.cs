@@ -28,18 +28,21 @@ namespace WebAPI.Services.CartService
             _context = context;
         }
 
-        public async Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId)
+        public async Task<ServiceResponse<List<CartItem>>> AddCartItem(int userId,int productId)
         {
             var serviceRespone = new  ServiceResponse<List<CartItem>>();
             var product = await _context.Product.FirstAsync(c => c.Id == productId);
+            // int card_Id = GetCart(userId);
             var newCartItem = new CartItem();
             newCartItem.Name = product.Title;
             newCartItem.Quantity = 1;
             newCartItem.Price = product.Price;
             _context.CartItem.Add(newCartItem);
             await _context.SaveChangesAsync();
-            var listCart = _context.Cart.Where(cart => cart.Id == newCartItem.Cart_Id);
-
+            serviceRespone.Data= await _context.CartItem.Where(cart => cart.Id == newCartItem.Cart_Id).ToListAsync();
+            // tao cai cart
+            var cart = new Cart();
+            cart.User_Id = 1;
             //  _context.Cart.Add(cartItem);
             // serviceRespone.Data = await _context.Product
             //     .Select(c => _mapper.Map<GetProductDto>(c))
@@ -52,10 +55,29 @@ namespace WebAPI.Services.CartService
             throw new NotImplementedException();
         }
 
+        
+
+        // public void Task<int> GetCart(int user_id)
+        // {
+        //     Cart cart = await  _context.Cart.FirstOrDefaultAsync(x => x.User_Id == user_id);
+        //     if (cart != null){
+        //         return cart.Id;
+        //     }else{
+        //         Cart newCart = new Cart(){
+        //             User_Id = user_id,
+        //         };
+        //         _context.Cart.Add(newCart);
+        //         _context.SaveChanges();
+        //         return newCart.Id;
+        //     }
+        // }
+
         public Task<ServiceResponse<List<CartItem>>> GetCartList()
         {
             
             throw new NotImplementedException();
         }
+
+        
     }
 }
