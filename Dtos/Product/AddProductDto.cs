@@ -9,7 +9,7 @@ namespace WebAPI.Dtos.Product
     {
         public string Title { get; set; } = "Iphone";
         public int Price { get; set; } = 22000;
-        public int Category_Id { get; set; }
+        
         public int Discount { get; set; } = 10;
         public int Rating_Average { get; set; } = 5;
         public string Description { get; set; } = "Best option for u guy";
@@ -17,7 +17,9 @@ namespace WebAPI.Dtos.Product
         public string ImageUrl_1 { get; set; } = String.Empty;
         public string ImageUrl_2 { get; set; } = String.Empty;
         public string ImageUrl_3 { get; set; } = String.Empty;
-        public DateTime Created_at { get; set; }
-        public DateTime Updated_at { get; set; }
+        public DateTime Created_at { get; set; } = DateTime.UtcNow;
+        // public DateTime Updated_at { get; set; }
+        public int Category_Id { get; set; }
+        
     }
 }

@@ -34,15 +34,17 @@ namespace WebAPI.Services.CartService
         public async Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId)
         {
             var serviceRespone = new  ServiceResponse<List<CartItem>>();
+            //Find product with id
             var product = await _context.Product.FirstAsync(c => c.Id == productId);
             // int card_Id = await GetCart(GetUserId());
 
             //Create a new cartItem
             var newCartItem = new CartItem();
-            // newCartItem.Cart_Id = card_Id;
+            //convert value from product
             newCartItem.Name = product.Title;
             newCartItem.Quantity = 1;
             newCartItem.Price = product.Price;
+            // newCartItem.Cart_Id
             _context.CartItem.Add(newCartItem);
             await _context.SaveChangesAsync();
 

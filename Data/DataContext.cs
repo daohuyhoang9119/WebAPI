@@ -23,15 +23,18 @@ namespace WebAPI.Data
             base.OnModelCreating(modelBuilder);
             var user = modelBuilder.Entity<User>();
             user.HasKey(x => x.Id);//pk
-            user.HasOne(x => x.Cart)
+            user.HasOne(x => x.Cart)//fk
                 .WithOne(x => x.User)
                 .HasForeignKey<User>(fk => fk.Cart_Id);
             
             var cart = modelBuilder.Entity<Cart>();
-            cart.HasKey(x => x.Id);//pk
+            // cart.HasKey(x => x.Id);//pk
             // cart.HasOne(x => x.User)//fk
             //     .WithOne(x => x.User_Cart)
             //     .HasForeignKey<Cart>(fk => fk.User_Id);
+
+            var cartItem = modelBuilder.Entity<CartItem>();
+            
         }
     }
 }

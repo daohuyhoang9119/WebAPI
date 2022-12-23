@@ -12,7 +12,7 @@ namespace WebAPI.Models
         public DateTime Created_At { get; set; } = DateTime.UtcNow;
         public DateTime Updated_At { get; set; } = DateTime.UtcNow;
         
-        public virtual User User { get; set; }
-        public virtual List<CartItem> CartList { get; set; }
+        public User User { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }
