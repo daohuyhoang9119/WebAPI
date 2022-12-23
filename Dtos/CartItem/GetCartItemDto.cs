@@ -7,6 +7,7 @@ namespace WebAPI.Dtos.CartItem
 {
     public class GetCartItemDto
     {
+        public int Id { get; set; }
         public int Cart_Id { get; set; }
         public int Product_Id { get; set; }
         public int Order_Id { get; set; }

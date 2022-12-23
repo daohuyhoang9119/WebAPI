@@ -10,7 +10,7 @@ namespace WebAPI.Services.CartService
     {
         Task<ServiceResponse<List<CartItem>>> GetCartList();
         // Task<int> GetCart(int user_id);
-        Task<ServiceResponse<List<CartItem>>> AddCartItem(int userId ,int productId);
+        Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId);
         Task<ServiceResponse<List<CartItem>>> DeleteCartItem(int cartItem_id);
     }
 }

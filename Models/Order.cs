@@ -16,7 +16,7 @@ namespace WebAPI.Models
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
         public double Total_Amount { get; set; }
-        public virtual ICollection<GetCartItemDto> Order_Products { get; set; } = new List<GetCartItemDto>();
+        public virtual ICollection<CartItem> Order_Products { get; set; } = new List<CartItem>();
         
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,20 @@ namespace WebAPI.Data
         public DbSet<Category> Category {get; set;}
         public DbSet<Cart> Cart {get; set; }
         public DbSet<CartItem> CartItem {get; set;}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder){
+            base.OnModelCreating(modelBuilder);
+            var user = modelBuilder.Entity<User>();
+            user.HasKey(x => x.Id);//pk
+            user.HasOne(x => x.Cart)
+                .WithOne(x => x.User)
+                .HasForeignKey<User>(fk => fk.Cart_Id);
+            
+            var cart = modelBuilder.Entity<Cart>();
+            cart.HasKey(x => x.Id);//pk
+            // cart.HasOne(x => x.User)//fk
+            //     .WithOne(x => x.User_Cart)
+            //     .HasForeignKey<Cart>(fk => fk.User_Id);
+        }
     }
 }

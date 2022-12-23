@@ -7,7 +7,7 @@ namespace WebAPI.Models
 {
     public class User
     {
-        public int Id { get; set; }
+        public int Id { get; set; } // PK
         public int Role_Id { get; set; }
         public string First_Name { get; set; } = string.Empty;
         public string Last_Name { get; set; } = string.Empty;
@@ -27,6 +27,8 @@ namespace WebAPI.Models
         public string Phone_Number { get; set; } = "0123456789";
         public DateTime Created_Date { get; set; }
         public DateTime Updated_Date { get; set; }
-        
+        public virtual Cart Cart { get; set; }
+        public int Cart_Id { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

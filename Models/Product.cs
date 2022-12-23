@@ -20,5 +20,6 @@ namespace WebAPI.Models
         public string ImageUrl_3 { get; set; } = String.Empty;
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
+        public Category Category { get; set; }
     }
 }

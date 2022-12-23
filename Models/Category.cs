@@ -13,6 +13,6 @@ namespace WebAPI.Models
         [Required]
         [MinLength(5), MaxLength(500)]
         public string Category_Name { get; set; } = "IOS";
-        public ICollection<Product> Products { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
