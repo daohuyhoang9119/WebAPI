@@ -25,5 +25,6 @@ namespace WebAPI.Models
         [ForeignKey("Category")]
         public int Category_Id { get; set; }
         public Category? Category { get; set; }
+        public CartItem? cartitem { get; set; }
     }
 }

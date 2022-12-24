@@ -36,7 +36,8 @@ namespace WebAPI.Services.CartService
             var serviceRespone = new  ServiceResponse<List<CartItem>>();
             //Find product with id
             var product = await _context.Product.FirstAsync(c => c.Id == productId);
-            // int card_Id = await GetCart(GetUserId());
+            //
+            int user_Id = GetUserId();
 
             //Create a new cartItem
             var newCartItem = new CartItem();

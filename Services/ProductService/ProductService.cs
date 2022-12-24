@@ -51,7 +51,7 @@ namespace WebAPI.Services.ProductService
             return serviceResponse;
         }
 
-            public async Task<ServiceResponse<List<GetProductDto>>> GetAllProducts(){
+        public async Task<ServiceResponse<List<GetProductDto>>> GetAllProducts(){
             var response = new ServiceResponse<List<GetProductDto>>();
             var dbProduct = await _context.Product.ToListAsync();
             response.Data = dbProduct.Select(c => _mapper.Map<GetProductDto>(c)).ToList();

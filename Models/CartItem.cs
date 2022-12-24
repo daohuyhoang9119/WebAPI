@@ -14,8 +14,8 @@ namespace WebAPI.Models
         public string Name { get; set; } = String.Empty;
         public int Quantity { get; set; } = 0;
         public double Price { get; set; } = 0;
+        public Product? product { get; set; }
         public int Product_Id {get;set;}
-        
         public Cart? cart { get; set; }
         public int Cart_Id { get; set; }
 

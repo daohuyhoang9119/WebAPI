@@ -38,6 +38,9 @@ namespace WebAPI.Data
             cartItem.HasOne(x => x.cart) //fk
                     .WithMany(x => x.CartItems)
                     .HasForeignKey(x => x.Cart_Id);
+            cartItem.HasOne(x => x.product)
+                    .WithOne(x => x.cartitem)
+                    .HasForeignKey<CartItem>(fk => fk.Product_Id);
 
         }
     }
