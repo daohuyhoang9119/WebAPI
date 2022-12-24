@@ -74,14 +74,11 @@ namespace WebAPI.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("cartId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("Cart_Id");
 
-                    b.HasIndex("cartId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("CartItem");
                 });
@@ -285,13 +282,15 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.CartItem", b =>
                 {
+                    b.HasOne("WebAPI.Models.Cart", "cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("Cart_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebAPI.Models.Order", null)
                         .WithMany("Order_Products")
                         .HasForeignKey("OrderId");
-
-                    b.HasOne("WebAPI.Models.Cart", "cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("cartId");
 
                     b.Navigation("cart");
                 });
