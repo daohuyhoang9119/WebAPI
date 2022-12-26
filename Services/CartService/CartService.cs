@@ -30,61 +30,73 @@ namespace WebAPI.Services.CartService
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
-
-        public async Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId)
+        public async Task<ServiceResponse<List<GetCartItemDto>>> GetCart()
         {
-            var serviceRespone = new  ServiceResponse<List<CartItem>>();
+            var response = new ServiceResponse<List<GetCartItemDto>>();
+            //Get cart by user id
+            // var user = await _context.User.FirstAsync(c => c.Id == GetUserId());
+            var cart = await _context.Cart.FirstOrDefaultAsync(c => c.User_Id == GetUserId());
+            //validate
+            if(cart == null) {
+                response.Data = null;
+                return response;
+            }else{
+                var listItem = await _context.CartItem.Where(c => c.Cart_Id == cart.Id)
+                            .Select(c => _mapper.Map<GetCartItemDto>(c))
+                            .ToListAsync();
+                response.Data = listItem;
+                return response;            
+            }
+            
+        }
+        public async Task<ServiceResponse<AddCartItemDto>> AddCartItem(int productId, int quantity)
+        {
+            var serviceRespone = new  ServiceResponse<AddCartItemDto>();
+            //Find Cart with user id
+            var cart = await _context.Cart.FirstOrDefaultAsync(c => c.User_Id == GetUserId());    
+            if(cart == null){
+                cart = CreateCart();
+            }
+
             //Find product with id
             var product = await _context.Product.FirstAsync(c => c.Id == productId);
-            //
-            int user_Id = GetUserId();
-
-            //Create a new cartItem
-            var newCartItem = new CartItem();
-            //convert value from product
-            newCartItem.Name = product.Title;
-            newCartItem.Quantity = 1;
-            newCartItem.Price = product.Price;
-            // newCartItem.Cart_Id
-            _context.CartItem.Add(newCartItem);
-            await _context.SaveChangesAsync();
-
-            serviceRespone.Data= await _context.CartItem.Where(item => item.Id == newCartItem.Cart_Id).ToListAsync();
-            // tao cai cart
-            var cart = new Cart();
-            cart.Total_Amount = 0;
-
-            return serviceRespone;
+            if(product == null){
+                serviceRespone.Data = null;
+                return serviceRespone;
+            }
+            //Check if product was picked in cart list?
+            //if not => add 
+            cart.AddItem(product,quantity);
+            await _context.SaveChangesAsync() ;
+            return serviceRespone ;
+            // throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<CartItem>>> DeleteCartItem(int cartItem_id)
+        public Task<ServiceResponse<List<GetCartItemDto>>> RemoveCartItem(int productId, int quantity)
         {
             throw new NotImplementedException();
         }
 
         
-        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
-                    .FindFirstValue(ClaimTypes.NameIdentifier));
+        private int GetUserId(){
+            int user = int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+            return user;
+            // return User.Identity?.
+           
+        } 
 
-        // private async Task<int> GetCart(int user_id)
-        // {
-        //     Cart cart = await  _context.Cart.FirstOrDefaultAsync(x => x.User_Id == user_id);
-        //     if (cart != null){
-        //         return cart.Id;
-        //     }else{
-        //         Cart newCart = new Cart(){
-        //         };
-        //         _context.Cart.Add(newCart);
-        //         _context.SaveChanges();
-        //         return newCart.Id;
-        //     }
-        // }
-
-        public Task<ServiceResponse<List<CartItem>>> GetCartList()
-        {
-            
-            throw new NotImplementedException();
+        private Cart CreateCart(){
+            var user_id = GetUserId();
+            if(user_id == null){
+                user_id = int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            }
+            var cart = new Cart{User_Id = user_id};
+            _context.Cart.Add(cart);
+            return cart;
         }
+        
+
+        
 
         
     }

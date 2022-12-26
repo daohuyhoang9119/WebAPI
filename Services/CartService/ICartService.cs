@@ -8,9 +8,9 @@ namespace WebAPI.Services.CartService
 {
     public interface ICartService
     {
-        Task<ServiceResponse<List<CartItem>>> GetCartList();
+        Task<ServiceResponse<List<GetCartItemDto>>> GetCart();
         // Task<int> GetCart(int user_id);
-        Task<ServiceResponse<List<CartItem>>> AddCartItem(int productId);
-        Task<ServiceResponse<List<CartItem>>> DeleteCartItem(int cartItem_id);
+        Task<ServiceResponse<AddCartItemDto>> AddCartItem(int productId, int quantity);
+        Task<ServiceResponse<List<GetCartItemDto>>> RemoveCartItem(int productId, int quantity);
     }
 }

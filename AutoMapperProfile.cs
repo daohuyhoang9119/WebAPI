@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using WebAPI.Dtos.Cart;
 using WebAPI.Dtos.CartItem;
 using WebAPI.Dtos.Category;
 using WebAPI.Dtos.Product;
@@ -24,6 +25,9 @@ namespace WebAPI
 
             CreateMap<AddCartItemDto, CartItem>();
             CreateMap<CartItem, GetCartItemDto>();
+            
+            CreateMap<AddCartDto, GetCartDto>();
+            CreateMap<Cart, GetCartDto>();
             
 
             CreateMap<UserRegisterDto, User>();

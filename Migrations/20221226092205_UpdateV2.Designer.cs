@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data;
 
@@ -11,9 +12,11 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221226092205_UpdateV2")]
+    partial class UpdateV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,14 +42,7 @@ namespace WebAPI.Migrations
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("User_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("User_Id")
-                        .IsUnique()
-                        .HasFilter("[User_Id] IS NOT NULL");
 
                     b.ToTable("Cart");
                 });
@@ -61,10 +57,6 @@ namespace WebAPI.Migrations
 
                     b.Property<int>("Cart_Id")
                         .HasColumnType("int");
-
-                    b.Property<string>("Image_Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -288,16 +280,10 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Cart_Id")
+                        .IsUnique();
+
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("WebAPI.Models.Cart", b =>
-                {
-                    b.HasOne("WebAPI.Models.User", "User")
-                        .WithOne("Cart")
-                        .HasForeignKey("WebAPI.Models.Cart", "User_Id");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebAPI.Models.CartItem", b =>
@@ -345,9 +331,23 @@ namespace WebAPI.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.User", b =>
+                {
+                    b.HasOne("WebAPI.Models.Cart", "Cart")
+                        .WithOne("User")
+                        .HasForeignKey("WebAPI.Models.User", "Cart_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Cart", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -367,9 +367,6 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.User", b =>
                 {
-                    b.Navigation("Cart")
-                        .IsRequired();
-
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

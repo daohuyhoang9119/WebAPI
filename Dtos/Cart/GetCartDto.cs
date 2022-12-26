@@ -6,7 +6,7 @@ using WebAPI.Dtos.CartItem;
 
 namespace WebAPI.Dtos.Cart
 {
-    public class AddCartDto
+    public class GetCartDto
     {
         public int Id { get; set; }
         public int User_Id { get; set; }
