@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Dtos.Order;
+using WebAPI.Dtos.OrderItem;
 using WebAPI.Services.OrderService;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
@@ -19,7 +23,7 @@ namespace WebAPI.Controllers
         }
         //get list order
         [HttpGet("list")]     
-        public async Task<ActionResult<ServiceResponse<List<Order>>>> GetAllOrders(){
+        public async Task<ActionResult<ServiceResponse<List<GetOrderDto>>>> GetAllOrders(){
             return Ok(await _orderService.GetAllOrders());
         }
 

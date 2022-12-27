@@ -23,9 +23,9 @@ namespace WebAPI.Services.AuthService
             _context = context;
             _configuration = configuration;
         }
-        public async Task<ServiceResponse<string>> Login(string useremail, string password)
+        public async Task<ServiceResponseLogin<string>> Login(string useremail, string password)
         {
-            var response = new ServiceResponse<string>();
+            var response = new ServiceResponseLogin<string>();
             var user = await _context.User.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(useremail.ToLower()));
             if(user == null){
                 response.Success = false;
@@ -34,7 +34,8 @@ namespace WebAPI.Services.AuthService
                 response.Success = false;
                 response.Message = "Wrong password";
             }else{
-                response.Data = CreateToken(user);
+                response.Data = user;
+                response.tokenUser = CreateToken(user);
             }
             return response;
         }

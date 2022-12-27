@@ -4,8 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
+using WebAPI.Dtos.Cart;
+using WebAPI.Dtos.Order;
 using WebAPI.Dtos.OrderItem;
+using WebAPI.Enums;
 
 namespace WebAPI.Services.OrderService
 {
@@ -21,9 +25,38 @@ namespace WebAPI.Services.OrderService
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Task<ServiceResponse<List<Order>>> AddOrder(Order newOrder)
+        public async Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto newOrder)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<List<GetOrderDto>>();
+            var cart = await _context.Cart.Where(c => c.User_Id == GetUserId()).Select(c => _mapper.Map<GetCartDto>(c))
+                            .FirstOrDefaultAsync();
+            if(cart == null){
+                response.Data = null;
+                return response;
+            }
+            var items = new List<OrderItem>();
+            foreach (var item in cart.CartItems)
+            {
+                var productItem = await _context.Product.FindAsync(item.Product_Id); 
+                var orderItem = new OrderItem{
+                    Name = item.Name,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                    Image_Url = item.Image_Url,
+                    Product_Id = item.Product_Id
+                };
+                items.Add(orderItem);
+            };
+            var total_amount = items.Sum(item => item.Price * item.Quantity);
+            var order_created = new Order{
+                OrderItems = items,
+                User_Id = GetUserId(),
+                Total_Amount = total_amount,
+                Status = OrderStatus.Pending
+            };
+            _context.Order.Add(order_created);
+            await _context.SaveChangesAsync(); 
+            return response;
         }
 
         public Task<ServiceResponse<List<Order>>> DeleteOrder(int id)
@@ -31,16 +64,20 @@ namespace WebAPI.Services.OrderService
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<List<GetOrderItemDto>>> GetAllOrders()
+        public async Task<ServiceResponse<List<GetOrderDto>>> GetAllOrders()
         {
             //get id with user id
-            // var orders = await _context.Order.
-            // var response = new ServiceResponse<List<GetOrderItemDto>>();
-            // var orders = await _context.Order.Where(c => c. == cart.Id)
-            //                 .Select(c => _mapper.Map<GetCartItemDto>(c))
-            //                 .ToListAsync();
-
-            throw new NotImplementedException();
+            var response = new ServiceResponse<List<GetOrderDto>>();
+            var orders = await _context.Order.Where(c => c.User_Id == GetUserId())
+                            .Select(c => _mapper.Map<GetOrderDto>(c))
+                            .ToListAsync();
+            if(orders == null){
+                response.Data = null;
+                return response;
+            }else{
+                response.Data = orders;
+                return response;
+            }
         }
 
         public async Task<ServiceResponse<Order>> GetOrderById(int id)
@@ -58,6 +95,15 @@ namespace WebAPI.Services.OrderService
                 return 0;
             }
             return user_id;           
+        }
+        private Order CreateOrder(){
+            var user_id = GetUserId();
+            if(user_id == null){
+                user_id = Int32.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            }
+            var order = new Order{User_Id = user_id};
+            _context.Order.Add(order);
+            return order;
         } 
     }
 }

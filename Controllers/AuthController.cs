@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
 {
     // [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepo;
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<ServiceResponse<User>>> Login(UserLoginDto request){
+        public async Task<ActionResult<ServiceResponseLogin<User>>> Login(UserLoginDto request){
             var response = await _authRepo.Login(request.Email, request.Password);
             if(!response.Success){
                 return BadRequest(response);

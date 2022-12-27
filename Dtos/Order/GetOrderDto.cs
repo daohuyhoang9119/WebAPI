@@ -10,7 +10,7 @@ namespace WebAPI.Dtos.Order
     public class GetOrderDto
     {
        public int Id { get; set; }
-        public int User_Id { get; set; }
+        public int? User_Id { get; set; }
         public String? Status { get; set; }
         public DateTime Created_At { get; set; } = DateTime.UtcNow;
         public DateTime Updated_At { get; set; }
