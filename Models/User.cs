@@ -29,6 +29,6 @@ namespace WebAPI.Models
         public DateTime Updated_Date { get; set; }
         public virtual Cart? Cart { get; set; }
         // public int Cart_Id { get; set; }
-        public List<Order>? Orders { get; set; }
+        public virtual List<Order>? Orders { get; set; }
     }
 }

@@ -69,12 +69,6 @@ namespace WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order_Id")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -87,8 +81,6 @@ namespace WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Cart_Id");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("Product_Id")
                         .IsUnique();
@@ -134,17 +126,51 @@ namespace WebAPI.Migrations
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("User_Id")
+                    b.Property<int?>("User_Id")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("User_Id");
 
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image_Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order_Id")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Product_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Order_Id");
+
+                    b.HasIndex("Product_Id")
+                        .IsUnique();
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Product", b =>
@@ -303,10 +329,6 @@ namespace WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebAPI.Models.Order", null)
-                        .WithMany("Order_Products")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("WebAPI.Models.Product", "product")
                         .WithOne("cartitem")
                         .HasForeignKey("WebAPI.Models.CartItem", "Product_Id")
@@ -322,11 +344,28 @@ namespace WebAPI.Migrations
                 {
                     b.HasOne("WebAPI.Models.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("User_Id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.OrderItem", b =>
+                {
+                    b.HasOne("WebAPI.Models.Order", "order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("Order_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("WebAPI.Models.Product", "product")
+                        .WithOne("orderitem")
+                        .HasForeignKey("WebAPI.Models.OrderItem", "Product_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("order");
+
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Product", b =>
@@ -352,12 +391,14 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.Order", b =>
                 {
-                    b.Navigation("Order_Products");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Product", b =>
                 {
                     b.Navigation("cartitem");
+
+                    b.Navigation("orderitem");
                 });
 
             modelBuilder.Entity("WebAPI.Models.User", b =>

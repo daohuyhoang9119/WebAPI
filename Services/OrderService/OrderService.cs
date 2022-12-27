@@ -1,12 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using WebAPI.Data;
+using WebAPI.Dtos.OrderItem;
 
 namespace WebAPI.Services.OrderService
 {
     public class OrderService : IOrderService
     {
+        private readonly IMapper _mapper;
+        private readonly DataContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public OrderService(IMapper mapper, DataContext context,IHttpContextAccessor httpContextAccessor)
+        {
+            _mapper = mapper;
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
         public Task<ServiceResponse<List<Order>>> AddOrder(Order newOrder)
         {
@@ -18,8 +31,15 @@ namespace WebAPI.Services.OrderService
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<List<Order>>> GetAllOrders()
+        public async Task<ServiceResponse<List<GetOrderItemDto>>> GetAllOrders()
         {
+            //get id with user id
+            // var orders = await _context.Order.
+            // var response = new ServiceResponse<List<GetOrderItemDto>>();
+            // var orders = await _context.Order.Where(c => c. == cart.Id)
+            //                 .Select(c => _mapper.Map<GetCartItemDto>(c))
+            //                 .ToListAsync();
+
             throw new NotImplementedException();
         }
 
@@ -32,5 +52,12 @@ namespace WebAPI.Services.OrderService
         {
             throw new NotImplementedException();
         }
+        private int GetUserId(){
+            int user_id = Int32.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+            if(user_id == null){
+                return 0;
+            }
+            return user_id;           
+        } 
     }
 }

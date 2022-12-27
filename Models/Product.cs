@@ -26,5 +26,6 @@ namespace WebAPI.Models
         public int Category_Id { get; set; }
         public Category? Category { get; set; }
         public CartItem? cartitem { get; set; }
+        public OrderItem? orderitem { get; set; }
     }
 }
