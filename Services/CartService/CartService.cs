@@ -66,10 +66,29 @@ namespace WebAPI.Services.CartService
             }
             //Check if product was picked in cart list?
             //if not => add 
-            cart.AddItem(product,quantity);
-            await _context.SaveChangesAsync() ;
+            CartItem existingCartItem = _context.CartItem.FirstOrDefault(x => x.Product_Id == product.Id && x.Cart_Id == cart.Id);
+            if(existingCartItem != null){
+                existingCartItem.Quantity += 1;
+                _context.Entry(existingCartItem).State = EntityState.Modified;
+                await _context.SaveChangesAsync() ;
+            }else{
+                CartItem cartitem = new CartItem{
+                    Quantity = quantity,
+                    Product_Id = productId,
+                    Cart_Id = cart.Id,
+                    Name = product.Title,
+                    Price = product.Price,
+                    Image_Url = product.ImageUrl_1,
+                };
+                // _mapper.Map<AddCartItemDto>(cartitem);
+                _context.CartItem.Add(cartitem);
+                await _context.SaveChangesAsync();
+            }
+
+            // cart.AddItem(product,quantity);
+            // await _context.SaveChangesAsync() ;
+
             return serviceRespone ;
-            // throw new NotImplementedException();
         }
 
         public Task<ServiceResponse<List<GetCartItemDto>>> RemoveCartItem(int productId, int quantity)
@@ -79,10 +98,11 @@ namespace WebAPI.Services.CartService
 
         
         private int GetUserId(){
-            int user = int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)); 
-            return user;
-            // return User.Identity?.
-           
+            int user_id = Int32.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+            if(user_id == null){
+                return 0;
+            }
+            return user_id;           
         } 
 
         private Cart CreateCart(){

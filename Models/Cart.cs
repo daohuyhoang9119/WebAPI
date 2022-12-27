@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Dtos.CartItem;
 
 namespace WebAPI.Models
 {
@@ -18,7 +19,14 @@ namespace WebAPI.Models
 
         public void AddItem(Product product, int quantity){
             if(CartItems.All(item => item.Product_Id != product.Id)){
-                CartItems.Add(new CartItem{Product_Id = product.Id, Quantity = quantity});
+                var item = new CartItem{
+                    Name = product.Title,
+                    Product_Id = product.Id,
+                    Price = product.Price,
+                    Image_Url = product.ImageUrl_1,
+                    Quantity = quantity,
+                };
+                CartItems.Add(item);
             }
             var existingItem = CartItems.FirstOrDefault(item => item.Product_Id == product.Id);
             if (existingItem != null) existingItem.Quantity += quantity;

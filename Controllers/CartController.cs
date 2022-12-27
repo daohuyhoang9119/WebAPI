@@ -9,7 +9,7 @@ using WebAPI.Services.CartService;
 
 namespace WebAPI.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CartController : ControllerBase
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<ServiceResponse<AddCartItemDto>>> AddCartItem(int productId, int quantity){
             var response = await _cartService.AddCartItem(productId,quantity);
             if(response.Data == null){
-                return BadRequest(new ProblemDetails{Title = "Problem saving item to Cart"});
+                return NotFound(response);
             }
             return Ok(response); 
         }

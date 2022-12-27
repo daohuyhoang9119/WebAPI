@@ -6,6 +6,8 @@ using AutoMapper;
 using WebAPI.Dtos.Cart;
 using WebAPI.Dtos.CartItem;
 using WebAPI.Dtos.Category;
+using WebAPI.Dtos.Order;
+using WebAPI.Dtos.OrderItem;
 using WebAPI.Dtos.Product;
 using WebAPI.Dtos.User;
 
@@ -28,6 +30,12 @@ namespace WebAPI
             
             CreateMap<AddCartDto, GetCartDto>();
             CreateMap<Cart, GetCartDto>();
+
+            CreateMap<Order, GetOrderDto>();
+            CreateMap<AddOrderDto, GetOrderDto>();
+
+            CreateMap<AddOrderItemDto, OrderItem>();
+            CreateMap<OrderItem, GetOrderItemDto>();
             
 
             CreateMap<UserRegisterDto, User>();

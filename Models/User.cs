@@ -27,8 +27,8 @@ namespace WebAPI.Models
         public string Phone_Number { get; set; } = "0123456789";
         public DateTime Created_Date { get; set; }
         public DateTime Updated_Date { get; set; }
-        public virtual Cart Cart { get; set; }
-        public int Cart_Id { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual Cart? Cart { get; set; }
+        // public int Cart_Id { get; set; }
+        public List<Order>? Orders { get; set; }
     }
 }

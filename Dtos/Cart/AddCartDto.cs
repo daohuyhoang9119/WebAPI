@@ -10,6 +10,6 @@ namespace WebAPI.Dtos.Cart
     {
         public int Id { get; set; }
         public int User_Id { get; set; }
-        public List<GetCartItemDto> CartItems { get; set; }
+        public List<GetCartItemDto>? CartItems { get; set; }
     }
 }

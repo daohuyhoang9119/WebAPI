@@ -12,7 +12,7 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221226165259_UpdateV3")]
+    [Migration("20221227070613_UpdateV3")]
     partial class UpdateV3
     {
         /// <inheritdoc />
@@ -66,7 +66,6 @@ namespace WebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Image_Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -129,9 +128,8 @@ namespace WebAPI.Migrations
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<double>("Total_Amount")
                         .HasColumnType("float");
@@ -224,9 +222,6 @@ namespace WebAPI.Migrations
                     b.Property<string>("Address_2")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Cart_Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("Company_Name")
                         .IsRequired()
@@ -370,8 +365,7 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.User", b =>
                 {
-                    b.Navigation("Cart")
-                        .IsRequired();
+                    b.Navigation("Cart");
 
                     b.Navigation("Orders");
                 });

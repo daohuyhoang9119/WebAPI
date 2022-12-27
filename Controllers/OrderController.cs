@@ -29,5 +29,10 @@ namespace WebAPI.Controllers
             return Ok(await _orderService.GetOrderById(id));
         }
 
+        [HttpDelete("id")]
+        public async Task<ActionResult<ServiceResponse<List<Order>>>> DeleteOrder(int id){
+            return Ok(await _orderService.DeleteOrder(id)); 
+        }
+
     }
 }
