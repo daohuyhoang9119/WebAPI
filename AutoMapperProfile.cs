@@ -27,6 +27,8 @@ namespace WebAPI
 
             CreateMap<AddCartItemDto, CartItem>();
             CreateMap<CartItem, GetCartItemDto>();
+            CreateMap<CartItem, AddCartItemDto>();
+
             
             CreateMap<AddCartDto, GetCartDto>();
             CreateMap<Cart, GetCartDto>();

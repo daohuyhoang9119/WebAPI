@@ -11,6 +11,6 @@ namespace WebAPI.Services.CartService
         Task<ServiceResponse<List<GetCartItemDto>>> GetCart();
         // Task<int> GetCart(int user_id);
         Task<ServiceResponse<AddCartItemDto>> AddCartItem(int productId, int quantity);
-        Task<ServiceResponse<List<GetCartItemDto>>> RemoveCartItem(int productId, int quantity);
+        Task<ServiceResponse<GetCartItemDto>> RemoveCartItem(int productId, int quantity);
     }
 }

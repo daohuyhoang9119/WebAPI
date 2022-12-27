@@ -80,20 +80,43 @@ namespace WebAPI.Services.CartService
                     Price = product.Price,
                     Image_Url = product.ImageUrl_1,
                 };
-                // _mapper.Map<AddCartItemDto>(cartitem);
-                _context.CartItem.Add(cartitem);
+                _mapper.Map<GetCartItemDto>(cartitem);
                 await _context.SaveChangesAsync();
+                _context.CartItem.Add(cartitem);
             }
 
             // cart.AddItem(product,quantity);
-            // await _context.SaveChangesAsync() ;
+            await _context.SaveChangesAsync();
 
             return serviceRespone ;
         }
 
-        public Task<ServiceResponse<List<GetCartItemDto>>> RemoveCartItem(int productId, int quantity)
+        public async Task<ServiceResponse<GetCartItemDto>> RemoveCartItem(int productId, int quantity)
         {
-            throw new NotImplementedException();
+            var serviceRespone = new  ServiceResponse<GetCartItemDto>();
+            //Find Cart with user id
+            var cart = await _context.Cart.FirstOrDefaultAsync(c => c.User_Id == GetUserId());    
+            if(cart == null){
+                cart = CreateCart();
+            }
+            //Find product with id
+            var product = await _context.Product.FirstAsync(c => c.Id == productId);
+            if(product == null){
+                serviceRespone.Data = null;
+                return serviceRespone;
+            }
+
+            CartItem existingCartItem = _context.CartItem.FirstOrDefault(x => x.Product_Id == product.Id && x.Cart_Id == cart.Id);
+            if(existingCartItem != null){
+                existingCartItem.Quantity -= quantity;
+                _context.Entry(existingCartItem).State = EntityState.Modified;
+                await _context.SaveChangesAsync() ;
+            }
+            if(existingCartItem?.Quantity == 0){
+                 _context.CartItem.Remove(existingCartItem);
+                 await _context.SaveChangesAsync();
+            }
+            return serviceRespone ;
         }
 
         

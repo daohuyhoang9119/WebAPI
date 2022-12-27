@@ -13,9 +13,9 @@ namespace WebAPI.Models
         public DateTime Created_At { get; set; } = DateTime.UtcNow;
         public DateTime Updated_At { get; set; } = DateTime.UtcNow;
         
-        public User User { get; set; }
+        public User? User { get; set; }
         public int? User_Id { get; set; }
-        public List<CartItem> CartItems { get; set; } = new();
+        public List<CartItem>? CartItems { get; set; } = new();
 
         public void AddItem(Product product, int quantity){
             if(CartItems.All(item => item.Product_Id != product.Id)){
