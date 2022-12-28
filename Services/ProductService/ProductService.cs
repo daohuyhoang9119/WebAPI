@@ -4,9 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Dtos.Product;
+using WebAPI.Extensions;
+using WebAPI.RequestHelpers;
 
 namespace WebAPI.Services.ProductService
 {
@@ -89,5 +92,22 @@ namespace WebAPI.Services.ProductService
             }
             return response;
         }
+    
+        public async Task<PagedList<Product>> GetProductByParams([FromQuery]ProductParams productParams){
+            var query =  _context.Product
+                .Sort(productParams.OrderBy)
+                .Search(productParams.SearchTerm)
+                .Filter(productParams.Brands)
+                .AsQueryable();
+            
+          var products = await PagedList<Product>.ToPagedList(query, 
+            productParams.PageNumber, productParams.PageSize);
+        //   Response.AddPaginationHeader(products.MetaData);
+        //   ServiceResponse<GetProductDto> response = new ServiceResponse<GetProductDto>();
+
+            return products;
+        }
+    
+    
     }
 }

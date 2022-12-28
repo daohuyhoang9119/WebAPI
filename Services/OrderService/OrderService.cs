@@ -45,6 +45,7 @@ namespace WebAPI.Services.OrderService
                     Image_Url = item.Image_Url,
                     Product_Id = item.Product_Id
                 };
+                _mapper.Map<GetOrderItemDto>(orderItem);
                 items.Add(orderItem);
             };
             var total_amount = items.Sum(item => item.Price * item.Quantity);
@@ -52,7 +53,13 @@ namespace WebAPI.Services.OrderService
                 OrderItems = items,
                 User_Id = GetUserId(),
                 Total_Amount = total_amount,
-                Status = OrderStatus.Pending
+                Status = OrderStatus.Pending,
+                Country = newOrder.Country,
+                Address = newOrder.Address,
+                Town = newOrder.Town,
+                Zip_Code = newOrder.Zip_Code,
+                Phone = newOrder.Phone,
+                Email = newOrder.Email,
             };
             _context.Order.Add(order_created);
             await _context.SaveChangesAsync(); 

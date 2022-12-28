@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos.CartItem;
+using WebAPI.RequestHelpers;
 using WebAPI.Services.CartService;
 
 namespace WebAPI.Controllers
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<AddCartItemDto>>> AddCartItem(int productId, int quantity){
             var response = await _cartService.AddCartItem(productId,quantity);
-            if(response.Data == null){
-                return NotFound(response);
-            }
+            // if(response.Data == null){
+            //     return NotFound(response);
+            // }
             return Ok(response); 
         }
 
@@ -44,5 +45,7 @@ namespace WebAPI.Controllers
             }
             return Ok(response); 
         }
+
+        
     }
 }

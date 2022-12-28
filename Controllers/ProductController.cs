@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos.Product;
+using WebAPI.RequestHelpers;
 using WebAPI.Services.ProductService;
 
 namespace WebAPI.Controllers
@@ -50,6 +51,14 @@ namespace WebAPI.Controllers
             // return Ok(await _productService.UpdateProduct(updatedProduct));
             var response = await _productService.DeleteProduct(id);
             if(response.Data == null){
+                return NotFound(response);
+            }
+            return Ok(response); 
+        }
+        [HttpGet]
+        public async Task<ActionResult<PagedList<Product>>> GetProductByParams([FromQuery]ProductParams productParams){
+            var response = await _productService.GetProductByParams(productParams);
+            if(response== null){
                 return NotFound(response);
             }
             return Ok(response); 

@@ -15,6 +15,12 @@ namespace WebAPI.Models
         public DateTime Created_At { get; set; } = DateTime.UtcNow;
         public DateTime Updated_At { get; set; }
         public double Total_Amount { get; set; }
+        public string? Country { get; set; }
+        public string? Address { get; set; }
+        public string? Town { get; set; }
+        public string? Zip_Code { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
         public User? User { get; set; }
         public int? User_Id { get; set; }
         public virtual List<OrderItem> OrderItems { get; set; } = new();

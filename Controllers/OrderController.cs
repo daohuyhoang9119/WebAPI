@@ -37,6 +37,11 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<ServiceResponse<List<Order>>>> DeleteOrder(int id){
             return Ok(await _orderService.DeleteOrder(id)); 
         }
+        [HttpPost]
+        //  Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto newOrder)
+        public async Task<ActionResult<ServiceResponse<List<GetOrderDto>>>> AddOrder(AddOrderDto newOrder){
+            return Ok(await _orderService.AddOrder(newOrder));
+        }
 
     }
 }
