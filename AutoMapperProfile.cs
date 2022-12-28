@@ -24,6 +24,7 @@ namespace WebAPI
             CreateMap<Category, GetCategoryDto>();
             CreateMap<AddCategoryDto, Category>();
             CreateMap<UpdateCategoryDto, GetCategoryDto>();
+            CreateMap<UpdateCategoryDto, Category>();
 
             CreateMap<AddCartItemDto, CartItem>();
             CreateMap<CartItem, GetCartItemDto>();

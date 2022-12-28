@@ -68,7 +68,7 @@ namespace WebAPI.Services.CategoryService
            try{
              var categoryDB = await _context.Category
                     .FirstOrDefaultAsync(c=> c.Id == updatedCategory.Id);
-                _mapper.Map(updatedCategory, category); 
+                _mapper.Map(updatedCategory, categoryDB);
                 await _context.SaveChangesAsync();
                 response.Data = _mapper.Map<GetCategoryDto>(categoryDB);
             } catch (Exception ex){
